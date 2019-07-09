@@ -24,7 +24,6 @@ class permutation : private noncopyable
         static index_type   rank(elements_type& p, elements_type& pr, const size_type& n);
 
     public:
-
         static index_type   rank(const elements_type& permutation);
         static void         unrank(const index_type& rank, const size_type& permutation_size, elements_type& permutation);
 

@@ -98,13 +98,13 @@ void test_permutation()
 
     for(auto element : permutation)
     {
-        std::wcout << char_type(element + 49) << L' ';
+        std::wcout << char_type(element + 48) << L' ';
     }
     std::wcout << std::endl;
 
     for(auto element : permutation2)
     {
-        std::wcout << char_type(element + 49) << L' ';
+        std::wcout << char_type(element + 48) << L' ';
     }
     std::wcout << std::endl;
 }
