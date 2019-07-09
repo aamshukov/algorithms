@@ -35,6 +35,14 @@ class permutation : private noncopyable
 template <typename ElementType>
 typename permutation<ElementType>::index_type permutation<ElementType>::rank(const typename permutation<ElementType>::elements_type& permutation)
 {
+    // synopsis:
+    //      Wendy Myrvold, Frank Ruskey, April, 2000
+    //      "Ranking and Unranking Permutations in Linear Time"
+    //      wendym@csr.uvic.ca  fruskey@csr.uvic.ca
+    //
+    //      ALGORITHM 317 (CACM) April-May-July 1967
+    //      Charles L. Robinson
+    //      Institute for Computer Research, U. of Chicago, Chicago, Ill.
     size_type n = static_cast<size_type>(permutation.size());
 
     elements_type p(permutation.begin(), permutation.end());    // permutation
