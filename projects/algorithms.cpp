@@ -90,7 +90,7 @@ void test_permutation()
     for(permutation_type::index_type k = 0; k < 1000; k++)
         std::next_permutation(permutation.begin(), permutation.end());
 
-    permutation_type::index_type rank = permutation_type::rank(permutation);
+    permutation_type::rank_type rank = permutation_type::rank(permutation);
     std::cout << rank << std::endl;
 
     permutation_type::elements_type permutation2;
@@ -107,4 +107,20 @@ void test_permutation()
         std::wcout << char_type(element + 48) << L' ';
     }
     std::wcout << std::endl;
+
+    //permutation_type::multiset_elements_type multiset = { 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 1, 1, 2, 2 }; // 1474650
+    //permutation_type::multiset_elements_type multiset_domain = { 0, 1, 2, 3};
+
+    permutation_type::multiset_elements_type multiset = { 1, 2, 3, 1, 3, 0, 2, 1, 1, 0, 3, 2, 1, 0, 1, 2 }; // 1841909318
+    permutation_type::multiset_elements_type multiset_domain = { 0, 1, 2, 3};
+
+    permutation_type::rank_type multiset_rank = permutation_type::rank_multiset(multiset, multiset_domain);
+
+    std::wcout << multiset_rank << std::endl;
+
+    permutation_type::multiset_elements_type multiset0;
+
+    permutation_type::unrank_multiset(multiset_rank, multiset_domain, static_cast<permutation_type::size_type>(multiset.size()), multiset0);
+
+    std::wcout << (multiset == multiset0) << std::endl;
 }

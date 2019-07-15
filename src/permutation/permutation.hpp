@@ -15,24 +15,31 @@ class permutation : private noncopyable
         using element_type = ElementType;
         using elements_type = std::vector<element_type>;
 
+        using multiset_element_type = int;
+        using multiset_elements_type = std::vector<multiset_element_type>;;
+
         using index_type = int;
         using indices_type = std::vector<index_type>;
 
         using size_type = int;
+        using rank_type = std::size_t;
 
     private:
-        static index_type   rank(elements_type& p, elements_type& pr, const size_type& n);
+        static rank_type    rank(elements_type& p, elements_type& pr, const size_type& n);
 
     public:
-        static index_type   rank(const elements_type& permutation);
-        static void         unrank(const index_type& rank, const size_type& permutation_size, elements_type& permutation);
+        static rank_type    rank(const elements_type& permutation);
+        static void         unrank(const rank_type& rank, const size_type& permutation_size, elements_type& permutation);
 
-        static index_type   rank_multiset(const elements_type& permutation);
-        static void         unrank_multiset(const index_type& rank, const size_type& permutation_size, elements_type& permutation);
+        static rank_type    rank_multiset(const elements_type& multiset, const multiset_elements_type& multiset_domain);
+        static void         unrank_multiset(const rank_type& rank,
+                                            const multiset_elements_type& multiset_domain,
+                                            const size_type multiset_size,
+                                            elements_type& multiset);
 };
 
 template <typename ElementType>
-typename permutation<ElementType>::index_type permutation<ElementType>::rank(const typename permutation<ElementType>::elements_type& permutation)
+typename permutation<ElementType>::rank_type permutation<ElementType>::rank(const typename permutation<ElementType>::elements_type& permutation)
 {
     // synopsis:
     //      Wendy Myrvold, Frank Ruskey, April, 2000
@@ -56,22 +63,22 @@ typename permutation<ElementType>::index_type permutation<ElementType>::rank(con
     }
 
     // rank
-    index_type result = rank(p, pr, n);
+    rank_type result = rank(p, pr, n);
 
     return result;
 }
 
 template <typename ElementType>
-typename permutation<ElementType>::index_type permutation<ElementType>::rank(typename permutation<ElementType>::elements_type& p,
-                                                                             typename permutation<ElementType>::elements_type& pr,
-                                                                             const typename permutation<ElementType>::size_type& n)
+typename permutation<ElementType>::rank_type permutation<ElementType>::rank(typename permutation<ElementType>::elements_type& p,
+                                                                            typename permutation<ElementType>::elements_type& pr,
+                                                                            const typename permutation<ElementType>::size_type& n)
 {
     if(n == 1)
     {
         return 0;
     }
 
-    index_type s = p[n - 1];
+    rank_type s = p[n - 1];
 
     std::swap(p[n - 1], p[pr[n - 1]]);
     std::swap(pr[s], pr[n - 1]);
@@ -80,11 +87,11 @@ typename permutation<ElementType>::index_type permutation<ElementType>::rank(typ
 }
 
 template <typename ElementType>
-void permutation<ElementType>::unrank(const typename permutation<ElementType>::index_type& rank,
+void permutation<ElementType>::unrank(const typename permutation<ElementType>::rank_type& rank,
                                       const typename permutation<ElementType>::size_type& permutation_size,
                                       typename permutation<ElementType>::elements_type& permutation)
 {
-    index_type r = rank;
+    rank_type r = rank;
     size_type n = permutation_size;
 
     elements_type& p(permutation);
@@ -110,17 +117,60 @@ void permutation<ElementType>::unrank(const typename permutation<ElementType>::i
 }
 
 template <typename ElementType>
-typename permutation<ElementType>::index_type permutation<ElementType>::rank_multiset(const typename permutation<ElementType>::elements_type& permutation)
+typename permutation<ElementType>::rank_type permutation<ElementType>::rank_multiset(const typename permutation<ElementType>::elements_type& multiset,
+                                                                                     const typename permutation<ElementType>::multiset_elements_type& multiset_domain)
 {
-    return 0;
+    // multiset_domain must be zero based
+    rank_type result = 0; // rank
+
+    index_type position = 1; // weighted position
+
+    size_type multiset_size = static_cast<size_type>(multiset.size());
+    size_type multiset_domain_size = static_cast<size_type>(multiset_domain.size());
+
+    for(index_type i = 0; i < multiset_size; i++)
+    {
+        index_type index = multiset_size - i - 1;
+
+        result += position * multiset_domain[multiset[index]];
+
+        position *= multiset_domain_size;
+    }
+
+    return result;
 }
 
 template <typename ElementType>
-void permutation<ElementType>::unrank_multiset(const typename permutation<ElementType>::index_type& rank,
-                                               const typename permutation<ElementType>::size_type& permutation_size,
-                                               typename permutation<ElementType>::elements_type& permutation)
+void permutation<ElementType>::unrank_multiset(const typename permutation<ElementType>::rank_type& rank,
+                                               const typename permutation<ElementType>::multiset_elements_type& multiset_domain,
+                                               const typename permutation<ElementType>::size_type multiset_size,
+                                               typename permutation<ElementType>::elements_type& multiset)
 {
+    // multiset_domain must be zero based
+    rank_type rank0 = rank;
+
+    multiset.resize(multiset_size);
+
+    std::fill(multiset.begin(), multiset.end(), 0);
+
+    size_type multiset_domain_size = static_cast<size_type>(multiset_domain.size());
+
+    size_type multiplication_step = multiset_domain_size;
+
+    auto position = static_cast<std::size_t>(std::pow(multiplication_step, multiset_size)); // max weighted position
+
+    for(index_type i = 0; i < multiset_size; i++)
+    {
+        position /= multiplication_step;
+
+        index_type index = static_cast<index_type>(rank0 / position);
+
+        multiset[i] = multiset_domain[index];
+
+        rank0 %= position;
+    }
 }
+
 END_NAMESPACE
 
 #endif // __ALGORITHMS_PERMUTATION_H__
