@@ -123,4 +123,24 @@ void test_permutation()
     permutation_type::unrank_multiset(multiset_rank, multiset_domain, static_cast<permutation_type::size_type>(multiset.size()), multiset0);
 
     std::wcout << (multiset == multiset0) << std::endl;
+
+    for(auto i = 0; i < std::numeric_limits<permutation_type::rank_type>::max() - 1; i++)
+    {
+        permutation_type::multiset_elements_type ms;
+        
+        permutation_type::unrank_multiset(i, multiset_domain, 16, ms);
+        permutation_type::rank_type ms_rank = permutation_type::rank_multiset(ms, multiset_domain);
+
+        //for(auto element : ms)
+        //{
+        //    std::wcout << char_type(element + 48) << L' ';
+        //}
+        //std::wcout << std::endl;
+
+        if(ms_rank != i)
+        {
+            std::wcout << L"Zopa: " << i << std::endl;
+            break;
+        }
+    }
 }

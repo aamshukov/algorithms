@@ -8,6 +8,8 @@
 
 BEGIN_NAMESPACE(algorithms)
 
+// α β ε λ ∅ ∈ ∉ Σ ∪ ⊕
+
 template <typename ElementType>
 class permutation : private noncopyable
 {
@@ -29,10 +31,10 @@ class permutation : private noncopyable
 
     public:
         static rank_type    rank(const elements_type& permutation);
-        static void         unrank(const rank_type& rank, const size_type& permutation_size, elements_type& permutation);
+        static void         unrank(rank_type rank, const size_type& permutation_size, elements_type& permutation);
 
         static rank_type    rank_multiset(const elements_type& multiset, const multiset_elements_type& multiset_domain);
-        static void         unrank_multiset(const rank_type& rank,
+        static void         unrank_multiset(rank_type rank,
                                             const multiset_elements_type& multiset_domain,
                                             const size_type multiset_size,
                                             elements_type& multiset);
@@ -87,7 +89,7 @@ typename permutation<ElementType>::rank_type permutation<ElementType>::rank(type
 }
 
 template <typename ElementType>
-void permutation<ElementType>::unrank(const typename permutation<ElementType>::rank_type& rank,
+void permutation<ElementType>::unrank(typename permutation<ElementType>::rank_type rank,
                                       const typename permutation<ElementType>::size_type& permutation_size,
                                       typename permutation<ElementType>::elements_type& permutation)
 {
@@ -121,6 +123,19 @@ typename permutation<ElementType>::rank_type permutation<ElementType>::rank_mult
                                                                                      const typename permutation<ElementType>::multiset_elements_type& multiset_domain)
 {
     // multiset_domain must be zero based
+    // simplified version of https://github.com/pyncomb/pyncomb/blob/master/pyncomb/tuplelex.py
+    // also ...
+    // https://computationalcombinatorics.wordpress.com/2012/09/10/ranking-and-unranking-of-combinations-and-permutations/
+    // Ranking Tuples
+    // To rank tuples, consider the simplest way to count k-tuples in {0, 1, ..., n-1}:
+    //  there are n ways to fix the i-th coordinate and n^i ways to extend the tuple to the previous positions (recall i ∈ {0, ... , k-1}).
+    // Therefore, we can rank a tuple X ∈ {0, 1, ..., n-1}^k by
+    //
+    //             k-1
+    // rank(X) = Σ    x(i) * n^i.
+    //             i=0
+    //
+    // ...
     rank_type result = 0; // rank
 
     index_type position = 1; // weighted position
@@ -132,8 +147,9 @@ typename permutation<ElementType>::rank_type permutation<ElementType>::rank_mult
     {
         index_type index = multiset_size - i - 1;
 
-        result += position * multiset_domain[multiset[index]];
+        result += position * multiset_domain[multiset[index]]; // mapping will be added later ... maybe
 
+        // n^i
         position *= multiset_domain_size;
     }
 
@@ -141,14 +157,15 @@ typename permutation<ElementType>::rank_type permutation<ElementType>::rank_mult
 }
 
 template <typename ElementType>
-void permutation<ElementType>::unrank_multiset(const typename permutation<ElementType>::rank_type& rank,
+void permutation<ElementType>::unrank_multiset(typename permutation<ElementType>::rank_type rank,
                                                const typename permutation<ElementType>::multiset_elements_type& multiset_domain,
                                                const typename permutation<ElementType>::size_type multiset_size,
                                                typename permutation<ElementType>::elements_type& multiset)
 {
     // multiset_domain must be zero based
-    rank_type rank0 = rank;
-
+    // simplified version of https://github.com/pyncomb/pyncomb/blob/master/pyncomb/tuplelex.py
+    // ... To unrank the tuple, iteratively pull out the residue modulo n and then divide by n (using integer division)
+    // to find the rank of the remaining tuple of shorter length.
     multiset.resize(multiset_size);
 
     std::fill(multiset.begin(), multiset.end(), 0);
@@ -163,11 +180,11 @@ void permutation<ElementType>::unrank_multiset(const typename permutation<Elemen
     {
         position /= multiplication_step;
 
-        index_type index = static_cast<index_type>(rank0 / position);
+        index_type index = static_cast<index_type>(rank / position);
 
         multiset[i] = multiset_domain[index];
 
-        rank0 %= position;
+        rank %= position;
     }
 }
 
