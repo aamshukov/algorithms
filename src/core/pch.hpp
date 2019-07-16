@@ -65,6 +65,9 @@
 #include <windows.h>
 #include <strsafe.h>
 
+#include <experimental/coroutine>
+#include <experimental/generator>
+
 #undef min
 #undef max
 

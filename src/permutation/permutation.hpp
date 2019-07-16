@@ -26,12 +26,30 @@ class permutation : private noncopyable
         using size_type = int;
         using rank_type = std::size_t;
 
+        struct node
+        {
+            using element_type = permutation::element_type;
+            using node_type = std::shared_ptr<node>;
+
+            element_type value;
+            node_type    next; // the permutations are stored in a singly-linked list ...
+
+            node() : value{}, next(nullptr)
+            {
+            }
+        };
+
     private:
         static rank_type    rank(elements_type& p, elements_type& pr, const size_type& n);
 
     public:
         static rank_type    rank(const elements_type& permutation);
         static void         unrank(rank_type rank, const size_type& permutation_size, elements_type& permutation);
+
+        static void         generate_multiset_permutation(elements_type& multiset, std::vector<elements_type>& permutations);
+
+        static std::experimental::generator<elements_type>
+                            generate_multiset_permutation_lazy(elements_type& multiset);
 
         static rank_type    rank_multiset(const elements_type& multiset, const multiset_elements_type& multiset_domain);
         static void         unrank_multiset(rank_type rank,
@@ -115,6 +133,213 @@ void permutation<ElementType>::unrank(typename permutation<ElementType>::rank_ty
 
         r /= n;
         n--;
+    }
+}
+
+template <typename ElementType>
+void permutation<ElementType>::generate_multiset_permutation(typename permutation<ElementType>::elements_type& multiset,
+                                                             std::vector<typename permutation<ElementType>::elements_type>& permutations)
+{
+    // Loopless Generation of Multiset Permutations using a Constant Number of Variables by Prefix Shifts. Aaron Williams, 2009
+
+    // code duplication with lazy version ... later ...
+    if(multiset.empty()) // ... if E is empty, then init(E) should exit.
+    {
+        return;
+    }
+
+    // ... non-increasing order
+    std::sort(multiset.begin(),
+              multiset.end(),
+              [](const element_type& element1, const element_type& element2)
+              {
+                  return element1 < element2;
+              });
+
+    // init
+    typename node::node_type h; // first (head) node
+    typename node::node_type i; // second-last node
+    typename node::node_type j; // last node
+
+    for(const auto& element : multiset) // build h
+    {
+        auto node(std::make_shared<node>());
+
+        (*node).value = element;
+        (*node).next = h;
+
+        h = node;
+    }
+
+    size_type n = static_cast<size_type>(multiset.size());
+
+    auto nth = [&h](index_type n)
+    {
+        typename node::node_type result(h);
+
+        index_type i = 0;
+
+        while(i < n && (*result).next != nullptr)
+        {
+            result = (*result).next;
+            i++;
+        }
+
+        return result;
+    };
+
+    i = nth(n - 2); // i
+    j = nth(n - 1); // j
+
+    typename node::node_type s;
+    typename node::node_type t;
+
+    auto visit = [&h, &permutations]()
+    {
+        elements_type permutation;
+
+        typename node::node_type v(h);
+
+        while(v != nullptr)
+        {
+            permutation.emplace_back((*v).value);
+            v = (*v).next;
+        }
+
+        permutations.emplace_back(permutation);
+    };
+
+    // collect the first result out of head
+    visit();
+
+    // generate ...
+    while(((*j).next != nullptr || (*j).value < (*h).value))
+    {
+        if((*j).next != nullptr && (*i).value >= (*(*j).next).value)
+        {
+            s = j;
+        }
+        else
+        {
+            s = i;
+        }
+        
+        t = (*s).next;
+
+        (*s).next = (*t).next;
+        (*t).next = h;
+
+        if((*t).value < (*h).value)
+        {
+            i = t;
+        }
+
+        j = (*i).next;
+        h = t;
+
+        visit();
+    }
+}
+
+template <typename ElementType>
+std::experimental::generator<typename permutation<ElementType>::elements_type> permutation<ElementType>::generate_multiset_permutation_lazy(elements_type& multiset)
+{
+    // Loopless Generation of Multiset Permutations using a Constant Number of Variables by Prefix Shifts. Aaron Williams, 2009
+
+    // code duplication with non-lazy version ... later ...
+    if(!multiset.empty()) // ... if E is empty, then init(E) should exit.
+    {
+        // ... non-increasing order
+        std::sort(multiset.begin(),
+                  multiset.end(),
+                  [](const element_type& element1, const element_type& element2)
+                  {
+                      return element1 < element2;
+                  });
+
+        // init
+        typename node::node_type h; // first (head) node
+        typename node::node_type i; // second-last node
+        typename node::node_type j; // last node
+
+        for(const auto& element : multiset) // build h
+        {
+            auto node(std::make_shared<node>());
+
+            (*node).value = element;
+            (*node).next = h;
+
+            h = node;
+        }
+
+        size_type n = static_cast<size_type>(multiset.size());
+
+        auto nth = [&h](index_type n)
+        {
+            typename node::node_type result(h);
+
+            index_type i = 0;
+
+            while(i < n && (*result).next != nullptr)
+            {
+                result = (*result).next;
+                i++;
+            }
+
+            return result;
+        };
+
+        i = nth(n - 2); // i
+        j = nth(n - 1); // j
+
+        typename node::node_type s;
+        typename node::node_type t;
+
+        auto visit = [&h]()
+        {
+            elements_type permutation;
+
+            typename node::node_type v(h);
+
+            while(v != nullptr)
+            {
+                permutation.emplace_back((*v).value);
+                v = (*v).next;
+            }
+
+            return permutation;
+        };
+
+        // collect the first result out of head
+        co_yield visit();
+
+        // generate ...
+        while(((*j).next != nullptr || (*j).value < (*h).value))
+        {
+            if((*j).next != nullptr && (*i).value >= (*(*j).next).value)
+            {
+                s = j;
+            }
+            else
+            {
+                s = i;
+            }
+        
+            t = (*s).next;
+
+            (*s).next = (*t).next;
+            (*t).next = h;
+
+            if((*t).value < (*h).value)
+            {
+                i = t;
+            }
+
+            j = (*i).next;
+            h = t;
+
+            co_yield visit();
+        }
     }
 }
 

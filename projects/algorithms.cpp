@@ -112,7 +112,7 @@ void test_permutation()
     //permutation_type::multiset_elements_type multiset_domain = { 0, 1, 2, 3};
 
     permutation_type::multiset_elements_type multiset = { 1, 2, 3, 1, 3, 0, 2, 1, 1, 0, 3, 2, 1, 0, 1, 2 }; // 1841909318
-    permutation_type::multiset_elements_type multiset_domain = { 0, 1, 2, 3};
+    permutation_type::multiset_elements_type multiset_domain = { 0, 1, 2, 3 };
 
     permutation_type::rank_type multiset_rank = permutation_type::rank_multiset(multiset, multiset_domain);
 
@@ -124,18 +124,21 @@ void test_permutation()
 
     std::wcout << (multiset == multiset0) << std::endl;
 
-    for(auto i = 0; i < std::numeric_limits<permutation_type::rank_type>::max() - 1; i++)
+    auto count = 0; //std::numeric_limits<permutation_type::rank_type>::max() - 1;
+
+    for(auto i = 0; i < count; i++)
     {
         permutation_type::multiset_elements_type ms;
         
         permutation_type::unrank_multiset(i, multiset_domain, 16, ms);
         permutation_type::rank_type ms_rank = permutation_type::rank_multiset(ms, multiset_domain);
 
-        //for(auto element : ms)
-        //{
-        //    std::wcout << char_type(element + 48) << L' ';
-        //}
-        //std::wcout << std::endl;
+        for(auto element : ms)
+        {
+            std::wcout << char_type(element + 48) << L' ';
+        }
+
+        std::wcout << std::endl;
 
         if(ms_rank != i)
         {
@@ -143,4 +146,55 @@ void test_permutation()
             break;
         }
     }
+
+    permutation_type::multiset_elements_type ms { 3, 4, 5, 1, 1, 2 };
+
+    std::vector<permutation_type::elements_type> permutations;
+
+    {
+        auto start = std::chrono::high_resolution_clock::now();
+        permutation_type::generate_multiset_permutation(ms, permutations);
+        auto end = std::chrono::high_resolution_clock::now();
+        auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        auto seconds = std::chrono::duration_cast<std::chrono::seconds>(end - start);
+        std::wcout << std::endl << L"generate_multiset_permutation " << milliseconds.count() << L"(ms), " << seconds.count() << L"(s)" << std::endl;
+        std::wcout << permutations.size() << std::endl;
+    }
+
+    for(auto permutation : permutations)
+    {
+        for(auto element : permutation)
+        {
+            std::wcout << char_type(element + 48) << L' ';
+        }
+
+        std::wcout << std::endl;
+    }
+
+    std::size_t k = 0;
+
+    {
+        auto start = std::chrono::high_resolution_clock::now();
+        for(auto multiset : permutation_type::generate_multiset_permutation_lazy(ms))
+        {
+            if(permutations[k++] != multiset)
+            {
+                std::wcout << L"zopa" << std::endl;
+                break;
+            }
+
+            //for(auto element : multiset)
+            //{
+            //    std::wcout << char_type(element + 48) << L' ';
+            //}
+
+            //std::wcout << std::endl;
+        }
+        auto end = std::chrono::high_resolution_clock::now();
+        auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        auto seconds = std::chrono::duration_cast<std::chrono::seconds>(end - start);
+        std::wcout << std::endl << L"generate_multiset_permutation_lazy " << milliseconds.count() << L"(ms), " << seconds.count() << L"(s)" << std::endl;
+    }
+
+    std::wcout << k << std::endl;
 }
