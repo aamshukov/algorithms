@@ -16,6 +16,9 @@
     <Filter Include="permutation">
       <UniqueIdentifier>{36cd2a27-fd3e-4392-ab33-025bfdf2dfc1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="strings">
+      <UniqueIdentifier>{704f2556-5d86-4a0e-bad6-cbd04227a886}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\permutation\permutation.hpp">
@@ -29,6 +32,9 @@
     </ClInclude>
     <ClInclude Include="..\src\suffixarray\suffixarray.hpp">
       <Filter>suffixarray</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\strings\strings.hpp">
+      <Filter>strings</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

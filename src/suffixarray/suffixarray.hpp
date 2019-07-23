@@ -87,7 +87,9 @@ class suffix_array : private noncopyable
 
     public:
         static bool build(const elements_type& string, indices_type& suffixes, algorithm = algorithm::sa_is);
-        static void print(const elements_type& string, const indices_type& suffixes);
+        static void lcp(const elements_type& string, const indices_type& suffixes, indices_type& prefixes);
+
+        static void print(const elements_type& string, const indices_type& suffixes, const indices_type& prefixes);
 };
 
 template <typename ElementType, typename Traits>
@@ -138,30 +140,6 @@ bool suffix_array<ElementType, Traits>::build_naive(const typename suffix_array<
     }
 
     return result;
-}
-
-template <typename ElementType, typename Traits>
-void suffix_array<ElementType, Traits>::print(const typename suffix_array<ElementType, Traits>::elements_type& string,
-                                              const typename suffix_array<ElementType, Traits>::indices_type& suffixes)
-{
-    for(auto element : string)
-    {
-        std::wcout << element << L' ';
-    }
-
-    std::wcout << std::endl;
-
-    for(auto offset : suffixes)
-    {
-        std::wcout << std::setw(4) << offset << L":  ";
-
-        for(index_type i = offset; i < static_cast<index_type>(string.size()); i++)
-        {
-            std::wcout << string[i] << L' ';
-        }
-
-        std::wcout << std::endl;
-    }
 }
 
 template <typename ElementType, typename Traits>
@@ -236,6 +214,51 @@ bool suffix_array<ElementType, Traits>::build_sa_is(const typename suffix_array<
     suffixes.swap(suffix_offsets);
 
     return result;
+}
+
+template <typename ElementType, typename Traits>
+inline void suffix_array<ElementType, Traits>::lcp(const typename suffix_array<ElementType, Traits>::elements_type& string,
+                                                   const typename suffix_array<ElementType, Traits>::indices_type& suffixes,
+                                                   typename suffix_array<ElementType, Traits>::indices_type& prefixes)
+{
+    // T. Kasai, G. Lee, H. Arimura, S.Arikawa and K. Park, "Linear-time longest-common-prefix computation in suffix arrays and its applications",
+    // Proc 12th Annual Conference on Combinatorial Pattern Matching, Springer, LNCS 2089 (2001) 181-192.
+    size_type n = static_cast<size_type>(suffixes.size());
+
+    std::vector<index_type> lcp(n, 0);
+    std::vector<index_type> rank(n, 0);
+
+    for(index_type i = 0; i < n; i++)
+    {
+        rank[suffixes[i]] = i;
+    }
+
+    index_type k = 0;
+
+    for(index_type i = 0; i < n; i++)
+    {
+        if(rank[i] == n - 1)
+        { 
+            k = 0;
+            continue;
+        } 
+
+        index_type j = suffixes[rank[i] + 1];
+
+        while(i + k < n && j + k < n && string[i + k] == string[j + k])
+        {
+            k++;
+        }
+
+        lcp[rank[i]] = k;
+
+        if(k > 0)
+        {
+            k--;
+        }
+    }
+
+    prefixes.swap(lcp);
 }
 
 template <typename ElementType, typename Traits>
@@ -605,6 +628,38 @@ void suffix_array<ElementType, Traits>::build_suffix_array(const typename suffix
     }
 
     suffix_offsets[0] = n - 1; // set the single sentinel LMS-substring, -1 for excluding virtual sentinel
+}
+
+template <typename ElementType, typename Traits>
+void suffix_array<ElementType, Traits>::print(const typename suffix_array<ElementType, Traits>::elements_type& string,
+                                              const typename suffix_array<ElementType, Traits>::indices_type& suffixes,
+                                              const typename suffix_array<ElementType, Traits>::indices_type& prefixes)
+{
+    for(auto element : string)
+    {
+        std::wcout << element << L' ';
+    }
+
+    std::wcout << std::endl;
+
+    for(auto offset : suffixes)
+    {
+        std::wcout << std::setw(4) << offset << L":  ";
+
+        for(index_type i = offset; i < static_cast<index_type>(string.size()); i++)
+        {
+            std::wcout << string[i] << L' ';
+        }
+
+        std::wcout << std::endl;
+    }
+
+    for(auto prefix : prefixes)
+    {
+        std::wcout << std::setw(4) << prefix << L" ";
+    }
+
+    std::wcout << std::endl;
 }
 
 END_NAMESPACE
