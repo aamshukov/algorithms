@@ -19,6 +19,9 @@
     <Filter Include="strings">
       <UniqueIdentifier>{704f2556-5d86-4a0e-bad6-cbd04227a886}</UniqueIdentifier>
     </Filter>
+    <Filter Include="blockchain">
+      <UniqueIdentifier>{c3fafcd4-e03b-4b4b-8906-ab3e985a19f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\permutation\permutation.hpp">
