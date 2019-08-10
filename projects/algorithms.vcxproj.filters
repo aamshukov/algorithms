@@ -39,10 +39,8 @@
     <ClInclude Include="..\src\strings\strings.hpp">
       <Filter>strings</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\src\sorting\merge.py">
+    <ClInclude Include="..\src\sorting\merge.hpp">
       <Filter>sorting</Filter>
-    </Text>
+    </ClInclude>
   </ItemGroup>
 </Project>

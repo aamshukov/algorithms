@@ -6,14 +6,18 @@
 
 #include <strings/strings.hpp>
 
+#include <sorting/merge.hpp>
+
 USINGNAMESPACE(algorithms)
 
 void test_suffix_array();
 void test_permutation();
 void test_strings();
+void test_merge_sort();
 
 int main()
 {
+    test_merge_sort();
     test_strings();
     test_suffix_array();
     test_permutation();
@@ -302,4 +306,54 @@ void test_permutation()
     }
 
     std::wcout << k << std::endl;
+}
+
+void test_merge_sort()
+{
+    using container_type = std::vector<int>;
+
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+
+    auto count = 100000;
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    while(count > 0)
+    {
+        if(count % 1000 == 0)
+            std::wcout << count << std::endl;
+
+        count--;
+
+        std::vector<int> elements;
+
+        for(int k = 0; k < count; k++)
+        {
+            elements.emplace_back(std::rand());
+        }
+
+        merge<container_type::iterator, std::less<int>>::sort(elements.begin(), elements.end(), std::less<int>());
+        //merge<container_type::iterator, std::less<int>>::sort(++elements.begin(), --elements.end(), std::less<int>());
+
+        if(!std::is_sorted(elements.begin(), elements.end()))
+        {
+            std::wcout << L"ERROR!!!";
+        }
+        else
+        {
+            //for(auto element : elements)
+            //{
+            //    std::wcout << element << L' ';
+            //}
+        }
+    }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    auto seconds = std::chrono::duration_cast<std::chrono::seconds>(end - start);
+
+    std::wcout << std::endl << L"Time is " << milliseconds.count() << L"(ms), " << seconds.count() << L"(s)" << std::endl;
+
+
+    std::wcout << std::endl;
 }
