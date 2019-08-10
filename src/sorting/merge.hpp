@@ -25,6 +25,15 @@ class merge : private noncopyable
         static void sort(const iterator_type first, const iterator_type last, predicate_type predicate)
         {
             // https://www.algorithmist.com/index.php/Merge_sort
+            //  Input: array a[] indexed from 0 to n-1.
+            //  m = 1
+            //  while m < n do
+            //      i = 0
+            //      while i < n-m do
+            //          merge subarrays a[i..i+m-1] and a[i+m .. min(i+2*m-1,n-1)] in-place.
+            //          i = i + 2 * m
+            //      m = m * 2
+            //  
             // https://algs4.cs.princeton.edu/22mergesort/MergeBU.java.html
             size_type n = static_cast<size_type>(std::distance(first, last));
 
