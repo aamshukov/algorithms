@@ -42,5 +42,8 @@
     <ClInclude Include="..\src\sorting\merge.hpp">
       <Filter>sorting</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\sorting\insertion.hpp">
+      <Filter>sorting</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
