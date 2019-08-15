@@ -29,7 +29,7 @@ class insertion : private noncopyable
             //      i ← i + 1
             //  end while
             //
-            // +STL
+            // +STL, iterators manipulations
             if(first != last)
             {
                 for(auto it = first; ++it != last;) // while i < length(A)
@@ -41,11 +41,12 @@ class insertion : private noncopyable
                     if(predicate(val, *first))
                     {
                         // new smallest element, move to front
+                        auto lst = it;
                         auto dst = ++cur;
 
-                        while(first != it)
+                        while(first != lst)
                         {
-                            *--dst = std::move(*--it);
+                            *--dst = std::move(*--lst);
                         }
 
                         *first = std::move(val);
