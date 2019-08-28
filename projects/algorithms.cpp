@@ -418,4 +418,5 @@ void test_insertion_sort()
 
 void test_topological_sort()
 {
+    graph<int> g;
 }
