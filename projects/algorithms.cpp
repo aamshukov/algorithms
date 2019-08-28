@@ -4,10 +4,15 @@
 #include <suffixarray/suffixarray.hpp>
 #include <permutation/permutation.hpp>
 
-#include <strings/strings.hpp>
+#include <string/strings.hpp>
+
+#include <graph/graph.hpp>
 
 #include <sorting/merge.hpp>
 #include <sorting/insertion.hpp>
+
+#include <sorting/topological.hpp>
+
 
 USINGNAMESPACE(algorithms)
 
@@ -16,14 +21,16 @@ void test_permutation();
 void test_strings();
 void test_merge_sort();
 void test_insertion_sort();
+void test_topological_sort();
 
 int main()
 {
+    test_topological_sort();
     test_insertion_sort();
     test_merge_sort();
-    //test_strings();
-    //test_suffix_array();
-    //test_permutation();
+    test_strings();
+    test_suffix_array();
+    test_permutation();
 }
 
 void test_strings()
@@ -407,4 +414,8 @@ void test_insertion_sort()
 
 
     std::wcout << std::endl;
+}
+
+void test_topological_sort()
+{
 }

@@ -16,11 +16,14 @@
     <Filter Include="permutation">
       <UniqueIdentifier>{36cd2a27-fd3e-4392-ab33-025bfdf2dfc1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="strings">
-      <UniqueIdentifier>{704f2556-5d86-4a0e-bad6-cbd04227a886}</UniqueIdentifier>
-    </Filter>
     <Filter Include="sorting">
       <UniqueIdentifier>{6b146cdf-beb7-481c-9458-61c9dea81053}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="graph">
+      <UniqueIdentifier>{826376d0-85d8-45f9-b690-2f920987cfcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="string">
+      <UniqueIdentifier>{704f2556-5d86-4a0e-bad6-cbd04227a886}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -36,13 +39,19 @@
     <ClInclude Include="..\src\suffixarray\suffixarray.hpp">
       <Filter>suffixarray</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\strings\strings.hpp">
-      <Filter>strings</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\sorting\merge.hpp">
       <Filter>sorting</Filter>
     </ClInclude>
     <ClInclude Include="..\src\sorting\insertion.hpp">
+      <Filter>sorting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\string\strings.hpp">
+      <Filter>string</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graph\graph.hpp">
+      <Filter>graph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\sorting\topological.hpp">
       <Filter>sorting</Filter>
     </ClInclude>
   </ItemGroup>

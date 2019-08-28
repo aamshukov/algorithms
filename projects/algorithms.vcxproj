@@ -118,7 +118,7 @@ xcopy $(SolutionDir)..\libs\ICU\icu4c-60_2\bin64\*.dll $(SolutionDir)..\build\$(
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>core/pch.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\src;$(SolutionDir)..\libs\ICU\icu4c-60_2\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\src;$(SolutionDir)..\libs\ICU\icu4c-60_2\include;D:\Tmp\boost\1.70</AdditionalIncludeDirectories>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/await %(AdditionalOptions)</AdditionalOptions>
@@ -178,7 +178,7 @@ xcopy $(SolutionDir)..\libs\ICU\icu4c-60_2\bin64\*.dll $(SolutionDir)..\build\$(
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>core/pch.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\src;$(SolutionDir)..\libs\ICU\icu4c-60_2\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\src;$(SolutionDir)..\libs\ICU\icu4c-60_2\include;D:\Tmp\boost\1.70</AdditionalIncludeDirectories>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/await %(AdditionalOptions)</AdditionalOptions>
@@ -210,10 +210,12 @@ xcopy $(SolutionDir)..\libs\ICU\icu4c-60_2\bin64\*.dll $(SolutionDir)..\build\$(
   <ItemGroup>
     <ClInclude Include="..\src\core\noncopyable.hpp" />
     <ClInclude Include="..\src\core\pch.hpp" />
+    <ClInclude Include="..\src\graph\graph.hpp" />
     <ClInclude Include="..\src\permutation\permutation.hpp" />
     <ClInclude Include="..\src\sorting\insertion.hpp" />
     <ClInclude Include="..\src\sorting\merge.hpp" />
-    <ClInclude Include="..\src\strings\strings.hpp" />
+    <ClInclude Include="..\src\sorting\topological.hpp" />
+    <ClInclude Include="..\src\string\strings.hpp" />
     <ClInclude Include="..\src\suffixarray\suffixarray.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
