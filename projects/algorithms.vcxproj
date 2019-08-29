@@ -208,6 +208,8 @@ xcopy $(SolutionDir)..\libs\ICU\icu4c-60_2\bin64\*.dll $(SolutionDir)..\build\$(
     <ClCompile Include="algorithms.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\core\counter.hpp" />
+    <ClInclude Include="..\src\core\factory.hpp" />
     <ClInclude Include="..\src\core\noncopyable.hpp" />
     <ClInclude Include="..\src\core\pch.hpp" />
     <ClInclude Include="..\src\graph\graph.hpp" />

@@ -1,5 +1,7 @@
 #include <core/pch.hpp>
 #include <core/noncopyable.hpp>
+#include <core/factory.hpp>
+#include <core/counter.hpp>
 
 #include <suffixarray/suffixarray.hpp>
 #include <permutation/permutation.hpp>
@@ -418,5 +420,10 @@ void test_insertion_sort()
 
 void test_topological_sort()
 {
-    graph<int> g;
+    graph<int, int> g;
+
+    auto v1 = g.add_vertex(5);
+    auto v2 = g.add_vertex(15);
+
+    auto e1 = g.add_edge(v1.first, v2.first, 1);
 }

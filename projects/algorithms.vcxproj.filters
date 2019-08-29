@@ -54,5 +54,11 @@
     <ClInclude Include="..\src\sorting\topological.hpp">
       <Filter>sorting</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\core\factory.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\counter.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

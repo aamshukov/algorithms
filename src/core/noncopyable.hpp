@@ -7,7 +7,7 @@
 
 #pragma once
 
-BEGIN_NAMESPACE(compression)
+BEGIN_NAMESPACE(algorithms)
 
 class noncopyable
 {
@@ -25,6 +25,6 @@ class noncopyable
 
 END_NAMESPACE
 
-using noncopyable = COMPANY::compression::noncopyable;
+using noncopyable = COMPANY::algorithms::noncopyable;
 
 #endif // __NONCOPYABLE_H__
