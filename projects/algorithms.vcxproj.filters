@@ -60,5 +60,20 @@
     <ClInclude Include="..\src\core\counter.hpp">
       <Filter>core</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\core\visitor.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\visitable.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graph\graph_algorithm.hpp">
+      <Filter>graph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graph\edge.hpp">
+      <Filter>graph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graph\vertex.hpp">
+      <Filter>graph</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

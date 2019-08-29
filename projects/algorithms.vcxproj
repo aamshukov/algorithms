@@ -212,7 +212,12 @@ xcopy $(SolutionDir)..\libs\ICU\icu4c-60_2\bin64\*.dll $(SolutionDir)..\build\$(
     <ClInclude Include="..\src\core\factory.hpp" />
     <ClInclude Include="..\src\core\noncopyable.hpp" />
     <ClInclude Include="..\src\core\pch.hpp" />
+    <ClInclude Include="..\src\core\visitable.hpp" />
+    <ClInclude Include="..\src\core\visitor.hpp" />
+    <ClInclude Include="..\src\graph\edge.hpp" />
     <ClInclude Include="..\src\graph\graph.hpp" />
+    <ClInclude Include="..\src\graph\graph_algorithm.hpp" />
+    <ClInclude Include="..\src\graph\vertex.hpp" />
     <ClInclude Include="..\src\permutation\permutation.hpp" />
     <ClInclude Include="..\src\sorting\insertion.hpp" />
     <ClInclude Include="..\src\sorting\merge.hpp" />

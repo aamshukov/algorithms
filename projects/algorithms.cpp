@@ -2,13 +2,18 @@
 #include <core/noncopyable.hpp>
 #include <core/factory.hpp>
 #include <core/counter.hpp>
+#include <core/visitor.hpp>
+#include <core/visitable.hpp>
 
 #include <suffixarray/suffixarray.hpp>
 #include <permutation/permutation.hpp>
 
 #include <string/strings.hpp>
 
+#include <graph/vertex.hpp>
+#include <graph/edge.hpp>
 #include <graph/graph.hpp>
+#include <graph/graph_algorithm.hpp>
 
 #include <sorting/merge.hpp>
 #include <sorting/insertion.hpp>
@@ -420,10 +425,28 @@ void test_insertion_sort()
 
 void test_topological_sort()
 {
-    graph<int, int> g;
+    using vertex_type = vertex<int>;
+    using edge_type = edge<vertex_type, int>;
 
-    auto v1 = g.add_vertex(5);
-    auto v2 = g.add_vertex(15);
+    struct graph_dfs_visitor : public visitor<std::shared_ptr<vertex_type>>
+    {
+        void visit(std::shared_ptr<vertex_type>&) override
+        {
+        }
+    };
 
-    auto e1 = g.add_edge(v1.first, v2.first, 1);
+    using visitor_type = graph_dfs_visitor;
+
+    using g_type = graph<vertex_type, edge_type, visitor_type>;
+
+    auto g(factory::create<g_type>());
+
+    auto v1 = (*g).add_vertex(5);
+    auto v2 = (*g).add_vertex(15);
+
+    auto e1 = (*g).add_edge(v1.first, v2.first, 1);
+
+    using ga_type = graph_algorithm<g_type>;
+
+    ga_type::dfs(g, graph_dfs_visitor());
 }

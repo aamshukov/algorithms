@@ -8,23 +8,12 @@
 
 BEGIN_NAMESPACE(algorithms)
 
-template <typename VType, typename EType, std::size_t N = 2>
+template <typename VertexType, typename EdgeType, typename VisitorType>
 class graph : private noncopyable
 {
     public:
-        using vertex_value_type = VType;
-        using edge_value_type = EType;
-
-        using index_type = int;
-        using size_type = int;
-
-        struct vertex
-        {
-            index_type id = 0;
-            vertex_value_type value = vertex_value_type();
-        };
-
-        using vertex_type = std::shared_ptr<vertex>;
+        using vertex_type = std::shared_ptr<VertexType>;
+        using vertex_value_type = typename VertexType::vertex_value_type;
 
         struct vertex_key_comparator
         {
@@ -36,15 +25,8 @@ class graph : private noncopyable
 
         using vertices_type = std::set<vertex_type, vertex_key_comparator>;
 
-        struct edge
-        {
-            index_type id = 0;
-            edge_value_type value = edge_value_type();
-
-            vertex_type endpoints[N]; // usually has two vertices and more vertices in hyper-graphs
-        };
-
-        using edge_type = std::shared_ptr<edge>;
+        using edge_type = std::shared_ptr<EdgeType>;
+        using edge_value_type = typename EdgeType::edge_value_type;
 
         struct edge_key_comparator
         {
@@ -56,7 +38,12 @@ class graph : private noncopyable
 
         using edges_type = std::set<edge_type, edge_key_comparator>;
 
+        using visitor_type = VisitorType;
+
         using ve_map_type = std::map<vertex_type, edge_type, vertex_key_comparator>;
+
+        using index_type = int;
+        using size_type = int;
 
         using counter_type = counter;
 
@@ -77,47 +64,48 @@ class graph : private noncopyable
         const edges_type&               edges() const;
 
         std::pair<vertex_type, bool>    add_vertex(const vertex_value_type& value);
-        std::pair<vertex_type, bool>    add_vertex(const vertex_type& new_vertex);
+        std::pair<vertex_type, bool>    add_vertex(const vertex_type& vertex);
 
         std::pair<vertex_type, bool>    remove_vertex(const index_type& id);
 
         std::pair<edge_type, bool>      add_edge(const vertex_type& vertex_u,
                                                  const vertex_type& vertex_v,
                                                  const edge_value_type& value);
-        std::pair<edge_type, bool>      add_edge(const edge_type& new_edge);
+        std::pair<edge_type, bool>      add_edge(const edge_type& edge);
 
         std::pair<edge_type, bool>      remove_edge(const index_type& id);
 };
 
-template <typename VType, typename EType, std::size_t N>
-graph<VType, EType, N>::graph()
+template <typename VertexType, typename EdgeType, typename VisitorType>
+graph<VertexType, EdgeType, VisitorType>::graph()
 {
 }
 
-template <typename VType, typename EType, std::size_t N>
-graph<VType, EType, N>::~graph()
+template <typename VertexType, typename EdgeType, typename VisitorType>
+graph<VertexType, EdgeType, VisitorType>::~graph()
 {
     my_ve_map.clear();
     my_vertices.clear();
     my_edges.clear();
 }
 
-template <typename VType, typename EType, std::size_t N>
-inline const typename graph<VType, EType, N>::vertices_type& graph<VType, EType, N>::vertices() const
+template <typename VertexType, typename EdgeType, typename VisitorType>
+inline const typename graph<VertexType, EdgeType, VisitorType>::vertices_type& graph<VertexType, EdgeType, VisitorType>::vertices() const
 {
     return my_vertices;
 }
 
-template <typename VType, typename EType, std::size_t N>
-inline const typename graph<VType, EType, N>::edges_type& graph<VType, EType, N>::edges() const
+template <typename VertexType, typename EdgeType, typename VisitorType>
+inline const typename graph<VertexType, EdgeType, VisitorType>::edges_type& graph<VertexType, EdgeType, VisitorType>::edges() const
 {
     return my_edges;
 }
 
-template <typename VType, typename EType, std::size_t N>
-std::pair<typename graph<VType, EType, N>::vertex_type, bool> graph<VType, EType, N>::add_vertex(const typename graph<VType, EType, N>::vertex_value_type& value)
+template <typename VertexType, typename EdgeType, typename VisitorType>
+std::pair<typename graph<VertexType, EdgeType, VisitorType>::vertex_type, bool>
+graph<VertexType, EdgeType, VisitorType>::add_vertex(const typename graph<VertexType, EdgeType, VisitorType>::vertex_value_type& value)
 {
-    auto new_vertex(factory::create<vertex>());
+    auto new_vertex(factory::create<VertexType>());
 
     (*new_vertex).id = my_vertices_counter.number();
     (*new_vertex).value = value;
@@ -127,28 +115,31 @@ std::pair<typename graph<VType, EType, N>::vertex_type, bool> graph<VType, EType
     return result;
 }
 
-template <typename VType, typename EType, std::size_t N>
-std::pair<typename graph<VType, EType, N>::vertex_type, bool> graph<VType, EType, N>::add_vertex(const typename graph<VType, EType, N>::vertex_type& new_vertex)
+template <typename VertexType, typename EdgeType, typename VisitorType>
+std::pair<typename graph<VertexType, EdgeType, VisitorType>::vertex_type, bool>
+graph<VertexType, EdgeType, VisitorType>::add_vertex(const typename graph<VertexType, EdgeType, VisitorType>::vertex_type& vertex)
 {
     auto result(std::make_pair(nullptr, false));
 
     return result;
 }
 
-template <typename VType, typename EType, std::size_t N>
-std::pair<typename graph<VType, EType, N>::vertex_type, bool> graph<VType, EType, N>::remove_vertex(const typename graph<VType, EType, N>::index_type& id)
+template <typename VertexType, typename EdgeType, typename VisitorType>
+std::pair<typename graph<VertexType, EdgeType, VisitorType>::vertex_type, bool>
+graph<VertexType, EdgeType, VisitorType>::remove_vertex(const typename graph<VertexType, EdgeType, VisitorType>::index_type& id)
 {
     auto result(std::make_pair(nullptr, false));
 
     return result;
 }
 
-template <typename VType, typename EType, std::size_t N>
-std::pair<typename graph<VType, EType, N>::edge_type, bool> graph<VType, EType, N>::add_edge(const typename graph<VType, EType, N>::vertex_type& vertex_u,
-                                                                                             const typename graph<VType, EType, N>::vertex_type& vertex_v,
-                                                                                             const typename graph<VType, EType, N>::edge_value_type& value)
+template <typename VertexType, typename EdgeType, typename VisitorType>
+std::pair<typename graph<VertexType, EdgeType, VisitorType>::edge_type, bool>
+graph<VertexType, EdgeType, VisitorType>::add_edge(const typename graph<VertexType, EdgeType, VisitorType>::vertex_type& vertex_u,
+                                                   const typename graph<VertexType, EdgeType, VisitorType>::vertex_type& vertex_v,
+                                                   const typename graph<VertexType, EdgeType, VisitorType>::edge_value_type& value)
 {
-    auto new_edge(factory::create<edge>());
+    auto new_edge(factory::create<EdgeType>());
 
     (*new_edge).id = my_edges_counter.number();
     (*new_edge).value = value;
@@ -161,8 +152,9 @@ std::pair<typename graph<VType, EType, N>::edge_type, bool> graph<VType, EType, 
     return result;
 }
 
-template <typename VType, typename EType, std::size_t N>
-std::pair<typename graph<VType, EType, N>::edge_type, bool> graph<VType, EType, N>::add_edge(const typename graph<VType, EType, N>::edge_type& new_edge)
+template <typename VertexType, typename EdgeType, typename VisitorType>
+std::pair<typename graph<VertexType, EdgeType, VisitorType>::edge_type, bool>
+graph<VertexType, EdgeType, VisitorType>::add_edge(const typename graph<VertexType, EdgeType, VisitorType>::edge_type& edge)
 {
     auto result(std::make_pair(nullptr, false));
 
@@ -172,8 +164,9 @@ std::pair<typename graph<VType, EType, N>::edge_type, bool> graph<VType, EType, 
     return result;
 }
 
-template <typename VType, typename EType, std::size_t N>
-std::pair<typename graph<VType, EType, N>::edge_type, bool> graph<VType, EType, N>::remove_edge(const typename graph<VType, EType, N>::index_type& id)
+template <typename VertexType, typename EdgeType, typename VisitorType>
+std::pair<typename graph<VertexType, EdgeType, VisitorType>::edge_type, bool>
+graph<VertexType, EdgeType, VisitorType>::remove_edge(const typename graph<VertexType, EdgeType, VisitorType>::index_type& id)
 {
     auto result(std::make_pair(nullptr, false));
 
