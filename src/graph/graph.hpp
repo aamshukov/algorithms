@@ -77,10 +77,13 @@ class graph : private noncopyable
         const edges_type&               edges() const;
 
         std::pair<vertex_type, bool>    add_vertex(const vertex_value_type& value);
+        std::pair<vertex_type, bool>    add_vertex(const vertex_type& new_vertex);
 
         std::pair<vertex_type, bool>    remove_vertex(const index_type& id);
 
-        std::pair<edge_type, bool>      add_edge(const vertex_type& vertex_u, const vertex_type& vertex_v, const edge_value_type& value);
+        std::pair<edge_type, bool>      add_edge(const vertex_type& vertex_u,
+                                                 const vertex_type& vertex_v,
+                                                 const edge_value_type& value);
         std::pair<edge_type, bool>      add_edge(const edge_type& new_edge);
 
         std::pair<edge_type, bool>      remove_edge(const index_type& id);
@@ -114,6 +117,19 @@ inline const typename graph<VType, EType, N>::edges_type& graph<VType, EType, N>
 template <typename VType, typename EType, std::size_t N>
 std::pair<typename graph<VType, EType, N>::vertex_type, bool> graph<VType, EType, N>::add_vertex(const typename graph<VType, EType, N>::vertex_value_type& value)
 {
+    auto new_vertex(factory::create<vertex>());
+
+    (*new_vertex).id = my_vertices_counter.number();
+    (*new_vertex).value = value;
+
+    auto result = add_vertex(new_vertex);
+
+    return result;
+}
+
+template <typename VType, typename EType, std::size_t N>
+std::pair<typename graph<VType, EType, N>::vertex_type, bool> graph<VType, EType, N>::add_vertex(const typename graph<VType, EType, N>::vertex_type& new_vertex)
+{
     auto result(std::make_pair(nullptr, false));
 
     return result;
@@ -135,7 +151,6 @@ std::pair<typename graph<VType, EType, N>::edge_type, bool> graph<VType, EType, 
     auto new_edge(factory::create<edge>());
 
     (*new_edge).id = my_edges_counter.number();
-
     (*new_edge).value = value;
 
     (*new_edge).endpoints[0] = vertex_u;
