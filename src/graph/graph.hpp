@@ -40,7 +40,9 @@ class graph : private noncopyable
 
         using visitor_type = VisitorType;
 
-        using ve_map_type = std::map<vertex_type, edge_type, vertex_key_comparator>;
+        using ve_map_type = std::map<vertex_type, edges_type, vertex_key_comparator>;
+
+        using adjacency_list_type = std::map<vertex_type, vertices_type, vertex_key_comparator>;
 
         using index_type = int;
         using size_type = int;
@@ -74,6 +76,8 @@ class graph : private noncopyable
         std::pair<edge_type, bool>      add_edge(const edge_type& edge);
 
         std::pair<edge_type, bool>      remove_edge(const index_type& id);
+
+        void                            build_adjacency_list(adjacency_list_type& adjacency_list);
 };
 
 template <typename VertexType, typename EdgeType, typename VisitorType>
@@ -119,6 +123,18 @@ template <typename VertexType, typename EdgeType, typename VisitorType>
 std::pair<typename graph<VertexType, EdgeType, VisitorType>::vertex_type, bool>
 graph<VertexType, EdgeType, VisitorType>::add_vertex(const typename graph<VertexType, EdgeType, VisitorType>::vertex_type& vertex)
 {
+    if((*vertex).id == 0)
+    {
+        (*vertex).id = my_vertices_counter.number();
+    }
+
+    my_vertices.emplace(vertex);
+
+    visitor_type vis;
+    auto it = vertices().begin();
+    auto vert = *it;
+    (*vert).accept(vis);//??
+
     auto result(std::make_pair(nullptr, false));
 
     return result;
@@ -156,6 +172,12 @@ template <typename VertexType, typename EdgeType, typename VisitorType>
 std::pair<typename graph<VertexType, EdgeType, VisitorType>::edge_type, bool>
 graph<VertexType, EdgeType, VisitorType>::add_edge(const typename graph<VertexType, EdgeType, VisitorType>::edge_type& edge)
 {
+    if((*edge).id == 0)
+    {
+        (*edge).id = my_edges_counter.number();
+    }
+
+
     auto result(std::make_pair(nullptr, false));
 
     //result.first = new_edge;
@@ -171,6 +193,12 @@ graph<VertexType, EdgeType, VisitorType>::remove_edge(const typename graph<Verte
     auto result(std::make_pair(nullptr, false));
 
     return result;
+}
+
+template <typename VertexType, typename EdgeType, typename VisitorType>
+void graph<VertexType, EdgeType, VisitorType>::build_adjacency_list(typename graph<VertexType, EdgeType, VisitorType>::adjacency_list_type& adjacency_list)
+{
+    adjacency_list.clear();
 }
 
 END_NAMESPACE

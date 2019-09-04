@@ -2,6 +2,7 @@
 #include <core/noncopyable.hpp>
 #include <core/factory.hpp>
 #include <core/counter.hpp>
+
 #include <core/visitor.hpp>
 #include <core/visitable.hpp>
 
@@ -428,9 +429,9 @@ void test_topological_sort()
     using vertex_type = vertex<int>;
     using edge_type = edge<vertex_type, int>;
 
-    struct graph_dfs_visitor : public visitor<std::shared_ptr<vertex_type>>
+    struct graph_dfs_visitor : public visitor<vertex_type>
     {
-        void visit(std::shared_ptr<vertex_type>&) override
+        void visit(vertex_type& vertex) override
         {
         }
     };
