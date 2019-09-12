@@ -482,5 +482,28 @@ void test_permutation_entropy()
         std::wcout << v << L' ';
     }
 
-    std::wcout << std::endl;
+    std::wcout << std::endl << std::endl;
+
+
+    using permutation_type = permutation<int>;
+
+    auto count = 40320;
+
+    for(int k = 0; k < count; k++)
+    {
+        permutation_type::elements_type permutation;
+
+        permutation_type::unrank(k, 8, permutation);
+
+        state_space.clear();
+
+        permutation_entropy<>::partition_state_space(permutation, dimension, delay, state_space);
+
+        for(auto [k, v] : enumerate(state_space))
+        {
+            std::wcout << v << L' ';
+        }
+
+        std::wcout << std::endl;
+    }
 }
