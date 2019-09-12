@@ -75,5 +75,11 @@
     <ClInclude Include="..\src\graph\vertex.hpp">
       <Filter>graph</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\permutation\permutation_entropy.hpp">
+      <Filter>permutation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\enumerate.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

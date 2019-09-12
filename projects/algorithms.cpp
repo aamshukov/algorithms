@@ -2,12 +2,14 @@
 #include <core/noncopyable.hpp>
 #include <core/factory.hpp>
 #include <core/counter.hpp>
+#include <core/enumerate.hpp>
 
 #include <core/visitor.hpp>
 #include <core/visitable.hpp>
 
 #include <suffixarray/suffixarray.hpp>
 #include <permutation/permutation.hpp>
+#include <permutation/permutation_entropy.hpp>
 
 #include <string/strings.hpp>
 
@@ -30,9 +32,12 @@ void test_strings();
 void test_merge_sort();
 void test_insertion_sort();
 void test_topological_sort();
+void test_permutation_entropy();
+
 
 int main()
 {
+    test_permutation_entropy();
     test_topological_sort();
     test_insertion_sort();
     test_merge_sort();
@@ -450,4 +455,32 @@ void test_topological_sort()
     using ga_type = graph_algorithm<g_type>;
 
     ga_type::dfs(g, graph_dfs_visitor());
+}
+
+void test_permutation_entropy()
+{
+    using elements_type = permutation_entropy<>::elements_type;
+    using matrix_type = permutation_entropy<>::matrix_type;
+    using index_type = permutation_entropy<>::index_type;
+
+    matrix_type state_space;
+
+    elements_type ts = { 4, 7, 9, 10, 6, 11, 3 };
+
+    auto dimension = 3;
+    auto delay = 1;
+
+    permutation_entropy<>::partition_state_space(ts, dimension, delay, state_space);
+
+    for(auto [k, v] : enumerate(state_space))
+    {
+        if((k % dimension) == 0)
+        {
+            std::wcout << std::endl;
+        }
+
+        std::wcout << v << L' ';
+    }
+
+    std::wcout << std::endl;
 }
