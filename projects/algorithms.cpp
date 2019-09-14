@@ -459,6 +459,7 @@ void test_topological_sort()
 
 void test_permutation_entropy()
 {
+    using element_type = permutation_entropy<>::element_type;
     using elements_type = permutation_entropy<>::elements_type;
     using matrix_type = permutation_entropy<>::matrix_type;
     using index_type = permutation_entropy<>::index_type;
@@ -484,6 +485,28 @@ void test_permutation_entropy()
 
     std::wcout << std::endl << std::endl;
 
+    byte key = 0;
+
+    #define calc_key(x, y, z, v)    \
+        v = 0;                      \
+        v |= (x << 4) & 0x3f;       \
+        v |= (y << 2) & 0x3f;       \
+        v |= (z << 0) & 0x3f;
+
+    std::unordered_map<element_type, index_type> pm;
+
+    calc_key(0, 1, 2, key)
+    pm[key] = 0;
+    calc_key(0, 2, 1, key)
+    pm[key] = 1;
+    calc_key(1, 0, 2, key)
+    pm[key] = 2;
+    calc_key(1, 2, 0, key)
+    pm[key] = 3;
+    calc_key(2, 0, 1, key)
+    pm[key] = 4;
+    calc_key(2, 1, 0, key)
+    pm[key] = 5;
 
     using permutation_type = permutation<int>;
 
@@ -498,6 +521,17 @@ void test_permutation_entropy()
         state_space.clear();
 
         permutation_entropy<>::partition_state_space(permutation, dimension, delay, state_space);
+
+        for(index_type k = 0; k < state_space.size(); k += 3)
+        {
+            auto key = 0;
+
+            calc_key(state_space[k + 0], state_space[k + 1], state_space[k + 2], key)
+
+            std::wcout << key << L' ';
+        }
+
+        std::wcout << std::endl;
 
         for(auto [k, v] : enumerate(state_space))
         {
