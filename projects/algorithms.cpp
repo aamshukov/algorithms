@@ -37,13 +37,13 @@ void test_permutation_entropy();
 
 int main()
 {
+    test_permutation();
     test_permutation_entropy();
     test_topological_sort();
     test_insertion_sort();
     test_merge_sort();
     test_strings();
     test_suffix_array();
-    test_permutation();
 }
 
 void test_strings()
@@ -528,7 +528,7 @@ void test_permutation_entropy()
 
             calc_key(state_space[k + 0], state_space[k + 1], state_space[k + 2], key)
 
-            std::wcout << key << L' ';
+            std::wcout << pm[key] << L' ';
         }
 
         std::wcout << std::endl;
