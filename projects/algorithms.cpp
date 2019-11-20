@@ -23,6 +23,8 @@
 
 #include <sorting/topological.hpp>
 
+#include <iprecision.h>
+
 
 USINGNAMESPACE(algorithms)
 
@@ -206,7 +208,7 @@ void test_suffix_array()
 
 void test_permutation()
 {
-    using permutation_type = permutation<int>;
+    using permutation_type = permutation<int, int_precision>;
     
     permutation_type::elements_type permutation;
 
@@ -248,7 +250,7 @@ void test_permutation()
 
     permutation_type::rank_type multiset_rank = permutation_type::rank_multiset(multiset, multiset_domain);
 
-    std::wcout << multiset_rank << std::endl;
+    std::cout << multiset_rank.toString() << std::endl;
 
     permutation_type::multiset_elements_type multiset0;
 

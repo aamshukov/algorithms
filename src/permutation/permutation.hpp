@@ -10,7 +10,7 @@ BEGIN_NAMESPACE(algorithms)
 
 // α β ε λ ∅ ∈ ∉ Σ ∪ ⊕
 
-template <typename ElementType>
+template <typename ElementType, typename RankType = std::size_t>
 class permutation : private noncopyable
 {
     public:
@@ -24,7 +24,7 @@ class permutation : private noncopyable
         using indices_type = std::vector<index_type>;
 
         using size_type = int;
-        using rank_type = std::size_t;
+        using rank_type = RankType;
 
         struct node
         {
@@ -32,7 +32,7 @@ class permutation : private noncopyable
             using node_type = std::shared_ptr<node>;
 
             element_type value;
-            node_type    next; // the permutations are stored in a singly-linked list ...
+            node_type next; // the permutations are stored in a singly-linked list ...
 
             node() : value{}, next(nullptr)
             {
@@ -58,8 +58,8 @@ class permutation : private noncopyable
                                             elements_type& multiset);
 };
 
-template <typename ElementType>
-typename permutation<ElementType>::rank_type permutation<ElementType>::rank(const typename permutation<ElementType>::elements_type& permutation)
+template <typename ElementType, typename RankType>
+typename permutation<ElementType, RankType>::rank_type permutation<ElementType, RankType>::rank(const typename permutation<ElementType, RankType>::elements_type& permutation)
 {
     // synopsis:
     //      Wendy Myrvold, Frank Ruskey, April, 2000
@@ -88,17 +88,17 @@ typename permutation<ElementType>::rank_type permutation<ElementType>::rank(cons
     return result;
 }
 
-template <typename ElementType>
-typename permutation<ElementType>::rank_type permutation<ElementType>::rank(typename permutation<ElementType>::elements_type& p,
-                                                                            typename permutation<ElementType>::elements_type& pr,
-                                                                            const typename permutation<ElementType>::size_type& n)
+template <typename ElementType, typename RankType>
+typename permutation<ElementType, RankType>::rank_type permutation<ElementType, RankType>::rank(typename permutation<ElementType, RankType>::elements_type& p,
+                                                                                                typename permutation<ElementType, RankType>::elements_type& pr,
+                                                                                                const typename permutation<ElementType, RankType>::size_type& n)
 {
     if(n == 1)
     {
         return 0;
     }
 
-    rank_type s = p[n - 1];
+    element_type s = p[n - 1];
 
     std::swap(p[n - 1], p[pr[n - 1]]);
     std::swap(pr[s], pr[n - 1]);
@@ -106,10 +106,10 @@ typename permutation<ElementType>::rank_type permutation<ElementType>::rank(type
     return s + n * rank(p, pr, n - 1);
 }
 
-template <typename ElementType>
-void permutation<ElementType>::unrank(typename permutation<ElementType>::rank_type rank,
-                                      const typename permutation<ElementType>::size_type& permutation_size,
-                                      typename permutation<ElementType>::elements_type& permutation)
+template <typename ElementType, typename RankType>
+void permutation<ElementType, RankType>::unrank(typename permutation<ElementType, RankType>::rank_type rank,
+                                                const typename permutation<ElementType, RankType>::size_type& permutation_size,
+                                                typename permutation<ElementType, RankType>::elements_type& permutation)
 {
     rank_type r = rank;
     size_type n = permutation_size;
@@ -129,16 +129,16 @@ void permutation<ElementType>::unrank(typename permutation<ElementType>::rank_ty
     // unrank
     while(n > 0)
     {
-        std::swap(p[n - 1], p[r % n]);
+        std::swap(p[n - 1], p[static_cast<element_type>(r % n)]);
 
         r /= n;
         n--;
     }
 }
 
-template <typename ElementType>
-void permutation<ElementType>::generate_multiset_permutation(typename permutation<ElementType>::elements_type& multiset,
-                                                             std::vector<typename permutation<ElementType>::elements_type>& permutations)
+template <typename ElementType, typename RankType>
+void permutation<ElementType, RankType>::generate_multiset_permutation(typename permutation<ElementType, RankType>::elements_type& multiset,
+                                                                       std::vector<typename permutation<ElementType, RankType>::elements_type>& permutations)
 {
     // Loopless Generation of Multiset Permutations using a Constant Number of Variables by Prefix Shifts. Aaron Williams, 2009
 
@@ -241,8 +241,8 @@ void permutation<ElementType>::generate_multiset_permutation(typename permutatio
     }
 }
 
-template <typename ElementType>
-std::experimental::generator<typename permutation<ElementType>::elements_type> permutation<ElementType>::generate_multiset_permutation_lazy(elements_type& multiset)
+template <typename ElementType, typename RankType>
+std::experimental::generator<typename permutation<ElementType, RankType>::elements_type> permutation<ElementType, RankType>::generate_multiset_permutation_lazy(elements_type& multiset)
 {
     // Loopless Generation of Multiset Permutations using a Constant Number of Variables by Prefix Shifts. Aaron Williams, 2009
 
@@ -343,9 +343,9 @@ std::experimental::generator<typename permutation<ElementType>::elements_type> p
     }
 }
 
-template <typename ElementType>
-typename permutation<ElementType>::rank_type permutation<ElementType>::rank_multiset(const typename permutation<ElementType>::elements_type& multiset,
-                                                                                     const typename permutation<ElementType>::multiset_elements_type& multiset_domain)
+template <typename ElementType, typename RankType>
+typename permutation<ElementType, RankType>::rank_type permutation<ElementType, RankType>::rank_multiset(const typename permutation<ElementType, RankType>::elements_type& multiset,
+                                                                                                         const typename permutation<ElementType, RankType>::multiset_elements_type& multiset_domain)
 {
     // multiset_domain must be zero based
     // simplified version of https://github.com/pyncomb/pyncomb/blob/master/pyncomb/tuplelex.py
@@ -381,11 +381,11 @@ typename permutation<ElementType>::rank_type permutation<ElementType>::rank_mult
     return result;
 }
 
-template <typename ElementType>
-void permutation<ElementType>::unrank_multiset(typename permutation<ElementType>::rank_type rank,
-                                               const typename permutation<ElementType>::multiset_elements_type& multiset_domain,
-                                               const typename permutation<ElementType>::size_type multiset_size,
-                                               typename permutation<ElementType>::elements_type& multiset)
+template <typename ElementType, typename RankType>
+void permutation<ElementType, RankType>::unrank_multiset(typename permutation<ElementType, RankType>::rank_type rank,
+                                                         const typename permutation<ElementType, RankType>::multiset_elements_type& multiset_domain,
+                                                         const typename permutation<ElementType, RankType>::size_type multiset_size,
+                                                         typename permutation<ElementType, RankType>::elements_type& multiset)
 {
     // multiset_domain must be zero based
     // simplified version of https://github.com/pyncomb/pyncomb/blob/master/pyncomb/tuplelex.py
