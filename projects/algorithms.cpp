@@ -25,20 +25,26 @@
 
 #include <iprecision.h>
 
+#include <misc/misc.hpp>
+
 
 USINGNAMESPACE(algorithms)
 
 void test_suffix_array();
 void test_permutation();
+void test_permutation256();
 void test_strings();
 void test_merge_sort();
 void test_insertion_sort();
 void test_topological_sort();
 void test_permutation_entropy();
+void test_zigzag();
 
 
 int main()
 {
+    test_zigzag();
+    test_permutation256();
     test_permutation();
     test_permutation_entropy();
     test_topological_sort();
@@ -333,6 +339,114 @@ void test_permutation()
     std::wcout << k << std::endl;
 }
 
+void test_permutation256()
+{
+    using permutation_type = permutation<int, int_precision>;
+
+    permutation_type::rank_type rank = int_precision("15768436584365387658715768436584365387658765298478273274247225362545711130183921399758598437594375346793857943875759365934524029482048325798433947529402840928409387658765298478273274247225362545711130183921399");
+    permutation_type::size_type size = 256;
+
+    permutation_type::elements_type permutation;
+
+    permutation_type::unrank(rank, size, permutation);
+
+    for(auto element : permutation)
+    {
+        std::wcout << std::to_wstring(element) << L' ';
+    }
+
+    std::wcout << std::endl << std::endl;
+
+    using slice_type = std::vector<int8_t>;
+    using slices_type = std::vector<slice_type>;
+
+    slices_type slices;
+    permutation_type::elements_type positions;
+
+    for(auto k = 15; k >= 0; k--)
+    {
+        // build slice
+        slice_type slice(size, false);
+        permutation_type::elements_type positions0;
+
+        for(auto j = 0; j < size; j++)
+        {
+            auto lb = k * 16; // low bound
+            auto hb = lb + 16; // high bound
+
+            auto el = permutation[j];
+
+            if(el >= lb && el < hb)
+            {
+                slice[j] = 1;
+                positions0.emplace_back(j);
+            }
+        }
+
+        std::wstringstream stream;
+
+        //for(auto element : slice)
+        //{
+        //    stream << std::to_wstring(element);
+        //}
+        //stream << L":" << std::to_wstring(slice.size());
+
+        //std::cout.clear();
+
+        if(!positions.empty())
+        {
+            // mark elements to be deleted
+            for(auto position : positions)
+            {
+                slice[position] = 2;
+            }
+
+            auto it(slice.begin());
+
+            while(it != slice.end())
+            {
+                if(*it == 2)
+                {
+                    it = slice.erase(it);
+                }
+                else
+                {
+                    ++it;
+                }
+            }
+        }
+
+        if(slice[slice.size() - 1] == 0) // last 0s are not significant!!!
+        {
+            auto it = std::find(slice.rbegin(), slice.rend(), 1) + 1;
+            auto sz = slice.rend() - it + 1;
+            slice.resize(sz);
+        }
+
+        slices.emplace_back(slice);
+
+        for(auto element : slice)
+        {
+            stream << std::to_wstring(element);
+        }
+        stream << L":" << std::to_wstring(slice.size()) << std::endl;
+
+        positions.insert(positions.end(), positions0.begin(), positions0.end());
+
+        stream.flush();
+
+        std::wcout << stream.str();
+    }
+
+    auto total = 0;
+    for(auto& slice : slices)
+    {
+        total += slice.size();
+    }
+
+    std::wcout << total << std::endl;
+}
+
 void test_merge_sort()
 {
     using container_type = std::vector<int>;
@@ -542,4 +656,19 @@ void test_permutation_entropy()
 
         std::wcout << std::endl;
     }
+}
+
+void test_zigzag()
+{
+    std::vector<int> matrix2d { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+    std::vector<int> result;
+
+    misc::zigzag<int, int>(matrix2d, 3, 4, result);
+
+    for(auto e : result)
+    {
+        std::wcout << e << L' ';
+    }
+
+    std::wcout << std::endl;
 }

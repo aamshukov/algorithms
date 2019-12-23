@@ -28,6 +28,9 @@
     <Filter Include="string">
       <UniqueIdentifier>{704f2556-5d86-4a0e-bad6-cbd04227a886}</UniqueIdentifier>
     </Filter>
+    <Filter Include="misc">
+      <UniqueIdentifier>{5e353458-3db4-42de-bcf1-876ab6124fc7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\permutation\permutation.hpp">
@@ -83,6 +86,9 @@
     </ClInclude>
     <ClInclude Include="..\src\core\enumerate.hpp">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\misc\misc.hpp">
+      <Filter>misc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
