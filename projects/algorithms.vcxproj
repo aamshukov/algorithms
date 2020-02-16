@@ -232,6 +232,12 @@ xcopy $(SolutionDir)..\libs\ICU\icu4c-60_2\bin64\*.dll $(SolutionDir)..\build\$(
     <ClInclude Include="..\src\string\strings.hpp" />
     <ClInclude Include="..\src\suffixarray\suffixarray.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\src\python\idioms\dunders.py" />
+    <None Include="..\src\python\idioms\idioms.py" />
+    <None Include="..\src\python\patterns\configurator.py" />
+    <None Include="..\src\python\patterns\singleton.py" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

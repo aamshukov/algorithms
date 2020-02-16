@@ -62,14 +62,14 @@
 
 #include <filesystem>
 
-#include <windows.h>
-#include <strsafe.h>
+#ifdef _WIN32
+#   define NOMINMAX
+#   include <windows.h>
+#   include <strsafe.h>
+#endif
 
 #include <experimental/coroutine>
 #include <experimental/generator>
-
-#undef min
-#undef max
 
 #define COMPANY uilab
 
