@@ -344,8 +344,10 @@ inline void suffix_array<ElementType, Traits>::build_type_map(const typename suf
 
     type_map.resize(n);
 
-    type_map[n - 1] = true; // 1) The last suffix suf(S, n −1) (after the last character) consisting of only the single character $ or 0 (the sentinel) is defined as S-type.
-                            // 2) The suffix containing only the last character (the last before virtual sentinel) must necessarily be larger than the empty suffix.
+    type_map[n - 1] = true; // 1) The last suffix suf(S, n −1) (after the last character)
+                            //    consisting of only the single character $ or 0 (the sentinel) is defined as S-type.
+                            // 2) The suffix containing only the last character (the last before virtual sentinel)
+                            //    must necessarily be larger than the empty suffix.
 
     if(n > 1) // real data, handles also 2)
     {
@@ -375,8 +377,8 @@ void suffix_array<ElementType, Traits>::build_buckets(const typename suffix_arra
     }
 
     // calculate heads
-    index_type offset = 0; // The empty suffix always winds up at the beginning of the suffix array in index 0, so the a bucket begins at index 1.
-
+    index_type offset = 0; // The empty suffix always winds up at the beginning of the suffix array in index 0,
+                           // so the a bucket begins at index 1.
     for(auto& bucket : buckets)
     {
         if(bucket.size > 0)

@@ -31,15 +31,6 @@
     <Filter Include="misc">
       <UniqueIdentifier>{5e353458-3db4-42de-bcf1-876ab6124fc7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="python">
-      <UniqueIdentifier>{afb675eb-c1cd-4f25-8beb-fea51d810ea5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="python\idioms">
-      <UniqueIdentifier>{b3a75309-6867-40df-ad5c-68d892d51219}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="python\patterns">
-      <UniqueIdentifier>{d470b6d1-2ab3-4a71-addb-beb3d5ecd72a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\permutation\permutation.hpp">
@@ -99,19 +90,5 @@
     <ClInclude Include="..\src\misc\misc.hpp">
       <Filter>misc</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\src\python\idioms\dunders.py">
-      <Filter>python\idioms</Filter>
-    </None>
-    <None Include="..\src\python\idioms\idioms.py">
-      <Filter>python\idioms</Filter>
-    </None>
-    <None Include="..\src\python\patterns\configurator.py">
-      <Filter>python\patterns</Filter>
-    </None>
-    <None Include="..\src\python\patterns\singleton.py">
-      <Filter>python\patterns</Filter>
-    </None>
   </ItemGroup>
 </Project>
