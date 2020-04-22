@@ -25,6 +25,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="idioms\" />
+    <Folder Include="unicode\" />
     <Folder Include="patterns\" />
     <Folder Include="suffixarray\" />
   </ItemGroup>
@@ -34,6 +35,7 @@
     <Compile Include="patterns\configurator.py" />
     <Compile Include="patterns\singleton.py" />
     <Compile Include="suffixarray\suffixarray.py" />
+    <Compile Include="unicode\unicode.py" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.6" />
