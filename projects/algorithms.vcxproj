@@ -129,6 +129,7 @@ xcopy $(SolutionDir)..\libs\ICU\icu4c-60_2\bin64\*.dll $(SolutionDir)..\build\$(
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalDependencies>icudt.lib;icuind.lib;icuiod.lib;icutestd.lib;icutud.lib;icuucd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\libs\ICU\icu4c-60_2\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <StackReserveSize>8046478848</StackReserveSize>
     </Link>
     <PostBuildEvent>
       <Command>xcopy $(TargetPath) $(SolutionDir)..\build\$(PlatformTarget)\$(Configuration)\ /F /Y

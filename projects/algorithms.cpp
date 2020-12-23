@@ -40,9 +40,34 @@ void test_topological_sort();
 void test_permutation_entropy();
 void test_zigzag();
 
+//unsigned long int hi;
+//
+//void deeplynested()
+//{
+//    unsigned long int lo, len;
+//    lo = (unsigned int) &lo;
+//    len = hi - lo;
+//    len /= 1024;
+//    len /= 1024;
+//}
+
+//void check_stack_size(int level)
+//{
+//    byte frame[1024 * 1024 * 1024];
+//    frame[0] = 0;
+//    uint64_t s = level * 1024 * 1024 * 1024;
+//    std::cout << s << std::endl;
+//    check_stack_size(level + 1);
+//}
 
 int main()
 {
+    //check_stack_size(1);
+
+    //int mainvar;
+    //hi = (unsigned long int) &mainvar;
+    //deeplynested();
+
     test_zigzag();
     test_permutation256();
     test_permutation();
