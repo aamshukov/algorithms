@@ -5,7 +5,7 @@
     <ClCompile Include="..\src\core\pch.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\libs\precision\precisioncore.cpp">
+    <ClCompile Include="..\libs\precision\precisioncore.cpp">
       <Filter>permutation</Filter>
     </ClCompile>
   </ItemGroup>
@@ -21,9 +21,6 @@
     </Filter>
     <Filter Include="sorting">
       <UniqueIdentifier>{6b146cdf-beb7-481c-9458-61c9dea81053}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="graph">
-      <UniqueIdentifier>{826376d0-85d8-45f9-b690-2f920987cfcb}</UniqueIdentifier>
     </Filter>
     <Filter Include="string">
       <UniqueIdentifier>{704f2556-5d86-4a0e-bad6-cbd04227a886}</UniqueIdentifier>
@@ -54,9 +51,6 @@
     <ClInclude Include="..\src\string\strings.hpp">
       <Filter>string</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\graph\graph.hpp">
-      <Filter>graph</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\sorting\topological.hpp">
       <Filter>sorting</Filter>
     </ClInclude>
@@ -71,15 +65,6 @@
     </ClInclude>
     <ClInclude Include="..\src\core\visitable.hpp">
       <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\graph\graph_algorithm.hpp">
-      <Filter>graph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\graph\edge.hpp">
-      <Filter>graph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\graph\vertex.hpp">
-      <Filter>graph</Filter>
     </ClInclude>
     <ClInclude Include="..\src\permutation\permutation_entropy.hpp">
       <Filter>permutation</Filter>
