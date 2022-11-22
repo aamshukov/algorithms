@@ -40,7 +40,7 @@ inline void misc::zigzag(const std::vector<ElementType>& matrix2d, SizeType rows
                 int r = i < cols ? 0 : i - cols + 1;
                 int c = i < cols ? i : cols - 1;
 
-                while(r < rows && c >= 0) // ... keep moving util we reach the edge of the matrix
+                while(r < rows && c >= 0) // ... keep moving until we reach the edge of the matrix
                 {
                     result[k++] = matrix2d[cols * r + c];
                     r++;

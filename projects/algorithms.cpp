@@ -62,8 +62,8 @@ int main()
     //hi = (unsigned long int) &mainvar;
     //deeplynested();
 
-    test_zigzag();
-    test_permutation256();
+    //test_zigzag();
+    //test_permutation256();
     test_permutation();
     test_permutation_entropy();
     test_insertion_sort();
@@ -305,7 +305,8 @@ void test_permutation()
         }
     }
 
-    permutation_type::multiset_elements_type ms { 3, 4, 5, 1, 1, 2 };
+    //permutation_type::multiset_elements_type ms { 3, 4, 5, 1, 1, 2 };
+    permutation_type::multiset_elements_type ms { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 };
 
     std::vector<permutation_type::elements_type> permutations;
 

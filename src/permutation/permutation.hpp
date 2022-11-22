@@ -163,7 +163,7 @@ void permutation<ElementType, RankType>::generate_multiset_permutation(typename 
 
     for(const auto& element : multiset) // build h
     {
-        auto node(std::make_shared<node>());
+        auto node(std::make_shared<permutation<ElementType, RankType>::node>());
 
         (*node).value = element;
         (*node).next = h;
@@ -264,7 +264,7 @@ std::experimental::generator<typename permutation<ElementType, RankType>::elemen
 
         for(const auto& element : multiset) // build h
         {
-            auto node(std::make_shared<node>());
+            auto node(std::make_shared<permutation<ElementType, RankType>::node>());
 
             (*node).value = element;
             (*node).next = h;
