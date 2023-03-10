@@ -64,12 +64,12 @@ int main()
 
     //test_zigzag();
     //test_permutation256();
+    test_suffix_array();
     test_permutation();
     test_permutation_entropy();
     test_insertion_sort();
     test_merge_sort();
     test_strings();
-    test_suffix_array();
 }
 
 void test_strings()
@@ -169,9 +169,11 @@ again:
 
 void test_suffix_array()
 {
-    //string_type str(L"cabbage");
+    string_type str(L"cabbage");
     //string_type str(L"banana");
-    string_type str(L"ABRACADABRA");
+    //string_type str(L"ABRACADABRA");
+    //string_type str(L"rikki-tikki-tikka");
+    //string_type str(L"baabaabac");
 
     std::vector<char_type> s(str.begin(), str.end());
     s.push_back(0); // add virtual sentinel

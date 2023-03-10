@@ -283,10 +283,10 @@ inline bool suffix_array<ElementType, Traits>::are_lms_strings_equal(const typen
                                                                      index_type index_b) // second string start offset
 {
     // controversion:
-    // An “LMS substring” is a portion of the input string starting at one LMS character and continuing up to (but not including) the next LMS character.
+    // An "LMS substring" is a portion of the input string starting at one LMS character and continuing up to (but not including) the next LMS character.
     //
     // Definition 2.2. (LMS-substring) A LMS-substring is (i) a substring S[i..j] with both S[i] and S[j] being LMS characters,
-    // and there is no other LMS character in the substring, for i != j; or (ii) the sentinel itself.
+    // and there is no other LMS character in the substring, for i != j; or (ii) the sentinel itself.
     bool result = true;
 
     size_type n = static_cast<size_type>(string.size()); // includes +1 for virtual sentinel
