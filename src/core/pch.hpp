@@ -62,6 +62,9 @@
 
 #include <filesystem>
 
+#include <string_view>
+#include <source_location>
+
 #ifdef _WIN32
 #   define NOMINMAX
 #   include <windows.h>

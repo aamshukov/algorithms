@@ -54,8 +54,38 @@ void test_zigzag();
 //    check_stack_size(level + 1);
 //}
 
+void log(const std::string_view message, const std::source_location location = std::source_location::current())
+{
+    std::clog << "file: "
+              << location.file_name() << "("
+              << location.line() << ":"
+              << location.column() << ") `"
+              << location.function_name() << "`: "
+              << message << '\n';
+}
+ 
+template <typename T> void fun(T x)
+{
+    log(x);
+}
+ 
+ class Abc
+ {
+    public:
+        void foo()
+        {
+            log("from class");
+        }
+ };
+
 int main()
 {
+    log("Hello world!");
+    fun("Hello C++20!");
+
+    Abc abc;
+    abc.foo();
+
     //check_stack_size(1);
 
     //int mainvar;
